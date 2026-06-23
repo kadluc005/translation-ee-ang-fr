@@ -142,8 +142,6 @@ Le frontend proxifie `/api/*` → `http://api:8000/` via Nginx.
 
 | Méthode | Route                | Description                                  |
 | ------- | -------------------- | -------------------------------------------- |
-| `POST`  | `/auth/register`     | Créer un compte                              |
-| `POST`  | `/auth/login`        | Se connecter (retourne un token JWT)         |
 | `POST`  | `/translation/`      | Traduire un texte                            |
 | `POST`  | `/speech/transcribe` | Transcrire un fichier audio (WAV 16kHz mono) |
 | `POST`  | `/tts/`              | Synthèse vocale → WAV                        |
