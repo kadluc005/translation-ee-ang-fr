@@ -1,0 +1,51 @@
+services:
+
+  api:
+    build: ./backend
+    container_name: fastapi_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    env_file:
+      - ./backend/.env
+
+    # --reload watches mounted files and triggers full Python process restart,
+    # which discards loaded AI models from memory. Remove it for production.
+    # Restore --reload only for active backend development.
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+
+  frontend:
+    build: ./frontend
+    container_name: translator_frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
+
+  postgres:
+    image: postgres:17
+    container_name: fastapi_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: fastapi_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d fastapi_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+volumes:
+  postgres_data:

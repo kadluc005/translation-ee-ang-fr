@@ -1,0 +1,55 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-brand-surface text-ink font-sans antialiased;
+  }
+
+  /* Visible focus for keyboard navigation (WCAG 2.4.7). */
+  :focus-visible {
+    outline: 2px solid theme("colors.brand.DEFAULT");
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .icon-btn {
+    @apply inline-flex h-10 w-10 items-center justify-center rounded-full text-ink-muted
+      transition-colors hover:bg-hover hover:text-ink
+      disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent;
+  }
+
+  .lang-tab {
+    @apply rounded-full px-3 py-1.5 text-sm font-medium uppercase tracking-wide
+      text-ink-muted transition-colors hover:bg-hover
+      disabled:cursor-not-allowed disabled:opacity-40;
+  }
+
+  .lang-tab-active {
+    @apply bg-brand-light text-brand hover:bg-brand-light;
+  }
+}
+
+/* Spinner used for loading states. */
+.spinner {
+  border: 2px solid theme("colors.brand.light");
+  border-top-color: theme("colors.brand.DEFAULT");
+  border-radius: 9999px;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
